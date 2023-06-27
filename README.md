@@ -1,3 +1,4 @@
 # KeYmaeraX_Project
-All version of KeYmaera X is available here we used 5.0.2. To use it first download it enter java -jar keymaerax.jar in terminal. 
-More information also is available here: java -jar keymaerax.jar
+Every version of KeYmaera X can be accessed here '[https://github.com/LS-Lab/KeYmaeraX-release/releases]', although we specifically utilized version 5.0.2. To use it, first download the appropriate version, and then input the command 'java -jar keymaerax.jar' into the terminal. 
+
+For additional information, refer to the documentation available here: '[https://keymaerax.org/]'. 
