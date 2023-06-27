@@ -1,1 +1,57 @@
+/* Exported from KeYmaera X v5.0.2 */
 
+Theorem "E+S <-> Es -> E+P"
+
+ProgramVariables
+  Real E;      /* The concentration of enzyme */
+  Real E0;     /* The initial concentration of enzyme */
+  Real S;      /* The concentration of substrate */
+  Real S0;     /* The initial concentration of substrate */
+  Real Es;     /* The concentration of enzyme-substrate complex */
+  Real Es0;    /* The initial concentration of enzyme-substrate complex */
+  Real P;      /* The concentration of product */
+  Real P0;     /* The initial concentration of product */
+  Real kf;     /* forward rate constant */
+  Real kr;     /* reverse rate constant */
+  Real kcat;   /* catalytic rate constant */
+End.
+
+Problem
+  E=E0 & S=S0 & Es=Es0 & P=P0 & E0>0 & S0>0 & Es0>0 & P0>0 & E>0 & S>0 & Es>0 & P>0 & kf>0 & kr>0 & kcat>0 & Es0=0 -> [{E'=-kf*E*S+kr*Es+kcat*Es,S'=-kf*E*S+kr*Es,Es'=kf*E*S-kr*Es-kcat*Es,P'=kcat*Es}]E+Es=E0
+End.
+
+Tactic "E+S <-> Es -> E+P: Proof"
+implyR('R=="E=E0&S=S0&Es=Es0&P=P0&E0>0&S0>0&Es0>0&P0>0&E>0&S>0&Es>0&P>0&kf>0&kr>0&kcat>0&Es0=0->[{E'=-kf*E*S+kr*Es+kcat*Es,S'=-kf*E*S+kr*Es,Es'=kf*E*S-kr*Es-kcat*Es,P'=kcat*Es}]E+Es=E0");
+unfold;
+dC("E+Es=E0+Es0", 'R=="[{E'=-kf*E*S+kr*Es+kcat*Es,S'=-kf*E*S+kr*Es,Es'=kf*E*S-kr*Es-kcat*Es,P'=kcat*Es}]E+Es=E0"); <(
+  "Use":
+    trueAnd('R=="[{E'=-kf*E*S+kr*Es+kcat*Es,S'=-kf*E*S+kr*Es,Es'=kf*E*S-kr*Es-kcat*Es,P'=kcat*Es&#true&E+Es=E0+Es0#}]E+Es=E0");
+    dC("E>0", 'R=="[{E'=-kf*E*S+kr*Es+kcat*Es,S'=-kf*E*S+kr*Es,Es'=kf*E*S-kr*Es-kcat*Es,P'=kcat*Es&E+Es=E0+Es0}]E+Es=E0"); <(
+      "Use":
+        dW('R=="[{E'=-kf*E*S+kr*Es+kcat*Es,S'=-kf*E*S+kr*Es,Es'=kf*E*S-kr*Es-kcat*Es,P'=kcat*Es&E+Es=E0+Es0&E>0}]E+Es=E0");
+        QE,
+      "Show":
+        dG("y'=1/2*1/E*(kf*E*S-kr*Es-kcat*Es)*y", "E*y^2=1", 'R=="[{E'=-kf*E*S+kr*Es+kcat*Es,S'=-kf*E*S+kr*Es,Es'=kf*E*S-kr*Es-kcat*Es,P'=kcat*Es&E+Es=E0+Es0}]E>0");
+        dIRule('R=="\exists y #[{E'=-kf*E*S+kr*Es+kcat*Es,S'=-kf*E*S+kr*Es,Es'=kf*E*S-kr*Es-kcat*Es,P'=kcat*Es,y'=1/2*1/E*(kf*E*S-kr*Es-kcat*Es)*y+0&E+Es=E0+Es0&E!=0}]E*y^2=1#");
+        Dassignb('R=="\exists y (E+Es=E0+Es0&E!=0->E*y^2=1&\forall E \forall Es \forall S \forall y [y':=1/2*1/E*(kf*E*S-kr*Es-kcat*Es)*y+0;][P':=kcat*Es;][Es':=kf*E*S-kr*Es-kcat*Es;][S':=-kf*E*S+kr*Es;]#[E':=-kf*E*S+kr*Es+kcat*Es;]E'*y^2+E*(2*y^(2-1)*y')=0#)");
+        Dassignb('R=="\exists y (E+Es=E0+Es0&E!=0->E*y^2=1&\forall E \forall Es \forall S \forall y [y':=1/2*1/E*(kf*E*S-kr*Es-kcat*Es)*y+0;][P':=kcat*Es;][Es':=kf*E*S-kr*Es-kcat*Es;]#[S':=-kf*E*S+kr*Es;](-kf*E*S+kr*Es+kcat*Es)*y^2+E*(2*y^(2-1)*y')=0#)");
+        Dassignb('R=="\exists y (E+Es=E0+Es0&E!=0->E*y^2=1&\forall E \forall Es \forall S \forall y [y':=1/2*1/E*(kf*E*S-kr*Es-kcat*Es)*y+0;][P':=kcat*Es;]#[Es':=kf*E*S-kr*Es-kcat*Es;](-kf*E*S+kr*Es+kcat*Es)*y^2+E*(2*y^(2-1)*y')=0#)");
+        Dassignb('R=="\exists y (E+Es=E0+Es0&E!=0->E*y^2=1&\forall E \forall Es \forall S \forall y [y':=1/2*1/E*(kf*E*S-kr*Es-kcat*Es)*y+0;]#[P':=kcat*Es;](-kf*E*S+kr*Es+kcat*Es)*y^2+E*(2*y^(2-1)*y')=0#)");
+        Dassignb('R=="\exists y (E+Es=E0+Es0&E!=0->E*y^2=1&\forall E \forall Es \forall S \forall y #[y':=1/2*1/E*(kf*E*S-kr*Es-kcat*Es)*y+0;](-kf*E*S+kr*Es+kcat*Es)*y^2+E*(2*y^(2-1)*y')=0#)");
+        QE
+    ),
+  "Show":
+    dIRule('R=="[{E'=-kf*E*S+kr*Es+kcat*Es,S'=-kf*E*S+kr*Es,Es'=kf*E*S-kr*Es-kcat*Es,P'=kcat*Es}]E+Es=E0+Es0"); <(
+      "dI Init":
+        QE,
+      "dI Step":
+        Dassignb('R=="[P':=kcat*Es;][Es':=kf*E*S-kr*Es-kcat*Es;][S':=-kf*E*S+kr*Es;]#[E':=-kf*E*S+kr*Es+kcat*Es;]E'+Es'=0#");
+        Dassignb('R=="[P':=kcat*Es;][Es':=kf*E*S-kr*Es-kcat*Es;]#[S':=-kf*E*S+kr*Es;]-kf*E*S+kr*Es+kcat*Es+Es'=0#");
+        Dassignb('R=="[P':=kcat*Es;]#[Es':=kf*E*S-kr*Es-kcat*Es;]-kf*E*S+kr*Es+kcat*Es+Es'=0#");
+        Dassignb('R=="[P':=kcat*Es;]-kf*E*S+kr*Es+kcat*Es+(kf*E*S-kr*Es-kcat*Es)=0");
+        QE
+    )
+)
+End.
+
+End.
