@@ -1,1 +1,22 @@
+/* Exported from KeYmaera X v5.0.2 */
 
+Theorem "A -> B in CSTR"
+
+ProgramVariables
+  Real A;     
+  Real Ain; 
+  Real k;
+  Real q; 
+  Real V;
+
+End.
+
+Problem
+ Ain>0 & Ain<2.5 & A>0 & A<0.4 & k>0.7 & k<0.8 & q=15 & V=125 -> [{A'=(q/V)*(Ain-A)-k*A}]A<0.5
+End.
+
+Tactic "A -> B in CSTR: Proof"
+auto
+End.
+
+End.
